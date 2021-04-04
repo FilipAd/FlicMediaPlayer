@@ -27,14 +27,18 @@ namespace FlicMediaPlayer
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static bool repeat = false;
+        public static bool mute = false;
         private readonly DispatcherTimer timer;
         //   string[] paths, files;
         List<string> paths = new List<string>();
         List<string> files = new List<string>();
+        public static double vol = 0;
         public MainWindow()
         {
             InitializeComponent();
             Player.Volume = SpeakerSlider.Value;
+            vol = SpeakerSlider.Value;
             timer = new DispatcherTimer
             {
                 Interval = new TimeSpan(0, 0, 1)
@@ -50,7 +54,7 @@ namespace FlicMediaPlayer
             {
                 TimerSlider.Maximum = Player.NaturalDuration.TimeSpan.TotalSeconds;
                 lbCurrent.Text = Player.Position.Minutes.ToString("00") + ":" + Player.Position.Seconds.ToString("00");
-                lbMusicLength.Text = Player.NaturalDuration.TimeSpan.TotalMinutes.ToString("00") + ":" + Player.NaturalDuration.TimeSpan.Seconds.ToString("00");
+                lbMusicLength.Text = (Player.NaturalDuration.TimeSpan.TotalMinutes).ToString("00")+ ":" + Player.NaturalDuration.TimeSpan.Seconds.ToString("00");
                 TimerSlider.Value = Player.Position.TotalSeconds;
             }
             else
@@ -58,6 +62,12 @@ namespace FlicMediaPlayer
                
                 lbCurrent.Text = "00:00";
                 lbMusicLength.Text = "00:00";
+                if(repeat)
+                {
+                    Player.Position = TimeSpan.Zero;
+                    Player.Play();
+                }
+                
             }
         }
        
@@ -78,9 +88,21 @@ namespace FlicMediaPlayer
 
         private void btSpeaker_Click(object sender, RoutedEventArgs e)
         {
-            SpeakerSlider.Value = SpeakerSlider.Minimum;
-            Player.Volume = SpeakerSlider.Minimum;
-           btSpeaker.Background  = Brushes.Crimson;
+            if (!mute)
+            {
+                mute = true;
+                vol = SpeakerSlider.Value;
+                SpeakerSlider.Value = SpeakerSlider.Minimum;
+                Player.Volume = SpeakerSlider.Minimum;
+                btSpeaker.Background = Brushes.Crimson;
+            }
+            else
+            {
+                mute = false;
+                SpeakerSlider.Value=0.3;
+                Player.Volume = 0.3;
+                btSpeaker.Background = Brushes.DarkTurquoise;
+            }
 
         }
 
@@ -88,6 +110,7 @@ namespace FlicMediaPlayer
         {
 
             Player.Play();
+     
             timer.Start();
         }
 
@@ -121,8 +144,9 @@ namespace FlicMediaPlayer
         private void listBoxPlayList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lbSongName.Text = listBoxPlayList.SelectedItem.ToString();
-
-            Player.Source= new Uri(paths.ElementAt(listBoxPlayList.SelectedIndex));
+            Player.Source = new Uri(paths.ElementAt(listBoxPlayList.SelectedIndex));
+            
+            
            
         }
 
@@ -150,6 +174,7 @@ namespace FlicMediaPlayer
         private void SpeakerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Player.Volume = SpeakerSlider.Value;
+            vol = SpeakerSlider.Value;
             if(SpeakerSlider.Value==SpeakerSlider.Minimum)
             {
                 btSpeaker.Background= Brushes.Crimson;
@@ -169,6 +194,11 @@ namespace FlicMediaPlayer
             {
                 int pos = Convert.ToInt32(TimerSlider.Value);
                 Player.Position = new TimeSpan(0, 0, 0, pos, 0);
+            }
+            if(TimerSlider.Value==TimerSlider.Maximum && repeat)
+            {
+                Player.Position = TimeSpan.Zero;
+                Player.Play();
             }
         }
 
@@ -213,6 +243,25 @@ namespace FlicMediaPlayer
             {
                 listBoxPlayList.SelectedIndex = listBoxPlayList.SelectedIndex + 1;
                 lbSongName.Text = listBoxPlayList.SelectedItem.ToString();
+            }
+        }
+
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void btnRew_Click(object sender, RoutedEventArgs e)
+        {
+            if(!repeat)
+            {
+                btnRew.Foreground = Brushes.Crimson;
+                repeat = true;
+            }
+            else
+            {
+                btnRew.Foreground = Brushes.White;
+                repeat = false;
             }
         }
     }

@@ -36,7 +36,7 @@
                             <materialDesign:PackIcon Kind="Folder"  Width="20" Height="20" />
                         </StackPanel>
                     </Button>
-                    <Button Style="{StaticResource CActionButtons}" HorizontalAlignment="right" Margin="70 0" ToolTip="Open File" x:Name="btnMinimize" Click="btnMinimize_Click">
+                    <Button Style="{StaticResource CActionButtons}" HorizontalAlignment="right" Margin="70 0" ToolTip="Minimize" x:Name="btnMinimize" Click="btnMinimize_Click">
                         <StackPanel Margin="-5">
                             <materialDesign:PackIcon Kind="WindowMinimize" Width="20" Height="20" />
                         </StackPanel>
@@ -67,7 +67,7 @@
                     <TextBlock FontSize="11" Text="0:00" Margin="20 0" Foreground="White" FontWeight="ExtraLight" TextAlignment="Center" HorizontalAlignment="Right" x:Name="lbMusicLength"/>
                 </Grid>
                 <Slider Value="0" Maximum="1" Margin="20 0" Foreground="DarkTurquoise" x:Name="TimerSlider" ValueChanged="TimerSlider_ValueChanged" SmallChange="1" LargeChange="1" MouseDown="TimerSlider_MouseDown" MouseLeftButtonUp="TimerSlider_MouseLeftButtonUp" MouseUp="TimerSlider_MouseUp" MouseLeftButtonDown="TimerSlider_MouseLeftButtonDown" MouseMove="TimerSlider_MouseMove" MouseRightButtonDown="TimerSlider_MouseRightButtonDown" MouseRightButtonUp="TimerSlider_MouseRightButtonUp"/>
-                <Button Style="{StaticResource CActionButtons}" HorizontalAlignment="Right"  Margin="0,30,20,0" ToolTip="Play Next" x:Name="btnRew"  Height="20" Width="20
+                <Button Style="{StaticResource CActionButtons}" HorizontalAlignment="Right"  Margin="0,30,20,0" ToolTip="Repeat" x:Name="btnRew"  Height="20" Width="20
                         " Click="btnRew_Click">
 
                     <StackPanel Margin="-5">
